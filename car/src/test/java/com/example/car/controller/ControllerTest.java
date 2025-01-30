@@ -43,24 +43,9 @@ public class ControllerTest {
     @Mock
     private CarService carService;
 
-    User currentUser;
-    List<Car>cars=new ArrayList<>();
     @BeforeEach
     public void setUp(){
         mockMvc= MockMvcBuilders.standaloneSetup(controller).build();
-
-        currentUser=new User();
-        currentUser.setId(1L);
-        currentUser.setName("dummy");
-
-        Car car=new Car();
-        car.setPrice(1000);
-        car.setURL("");
-        car.setModel("BMW");
-        car.setUser(currentUser);
-        car.setCarId(1);
-
-        cars.add(car);
     }
 
     @Test
