@@ -4,7 +4,9 @@ import com.example.car.model.Cars;
 import com.example.car.model.User;
 import com.example.car.service.CarService;
 import com.example.car.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +16,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.ArrayList;
 import java.util.List;
 
-@org.springframework.stereotype.Controller
-public class Controller {
 
-    @Autowired
-    private CarService carService;
-    @Autowired
-    private UserService userService;
-    User currentUser=null;
+@Controller
+public class BaseController {
+
+    private final CarService carService;
+
+    
+
+
+    private final UserService userService;
+    public BaseController(CarService carService, UserService userService){
+        this.carService=carService;
+        this.userService=userService;
+    }
+    //User currentUser=null;
+
 
     static List<Cars> list;
     public static void carStarter(){
@@ -33,51 +43,56 @@ public class Controller {
     }
 
 
-    @GetMapping("html") //opening page after starting the application , returns home page
+    @GetMapping("/html") //opening page after starting the application , returns home page
     public String home(){
         carStarter();
         return "HOME";
     }
 
 
-    @GetMapping("signupPage") //after clicking signup button in home page , this method will return signup page
+    @GetMapping("/signupPage") //after clicking signup button in home page , this method will return signup page
     public String signUp(){
         return "SIGNUP";
+    }
+
+    @PostMapping("/chatSubmit")
+    public String chat(@RequestParam String chat){
+        System.out.println(chat);
+        return "HOME";
+
+
     }
 
 
     @PostMapping("/Signed")//this method will return login page after the user enters details and clicking the signup button
     public String afterSign(@RequestParam("name")String name,@RequestParam("mobile") String number,@RequestParam("password") String password ){
-        User user=new User();
-        user.setName(name);
-        user.setMobile(number);
-        user.setPassword(password);
 
-        userService.save(user);
+
+        userService.save(name,number,password);
 
         return "LOGIN";
     }
 
 
-    @GetMapping("loginPage") //after clicking login button in home page ,this method will return login page
+    @GetMapping("/loginPage") //after clicking login button in home page ,this method will return login page
     public String log(){
         return "LOGIN";
     }
 
 
     @PostMapping("/logged") //this method recives the mobile number and password and allows the user to dashboard, if details are wrong redirects to same page
-    public String afterLogin(@RequestParam("mobile") String number,@RequestParam("password") String password){
-        User user=userService.getUser(number);
-        if (user!=null && user.getPassword().equals(password)){
-            currentUser=user;
+    public String afterLogin(@RequestParam("mobile") String number, @RequestParam("password") String password, HttpSession session){
+        User user=userService.validateUser(number,password);
+        if (user!=null){
+            //currentUser=user;
+            session.setAttribute("user",user);
             return "DASHBOARD";
         }return "LOGIN";
-
     }
 
 
     @GetMapping("/add/{carid}") //this method gets triggered after user tries to add a car to thier cart
-    public String addToCart(@PathVariable int carid){
+    public String addToCart(@PathVariable int carid,HttpSession session){
         Cars carFromCars=carService.getCarById(carid,list);
         if (carFromCars!=null){
             Car car=new Car();
@@ -85,7 +100,7 @@ public class Controller {
             car.setCarId(carid);
             car.setModel(carFromCars.getModel());
             car.setPrice((int)carFromCars.getPrice());
-            car.setUser(currentUser);
+            car.setUser((User) session.getAttribute("user"));
             carService.save(car);
         }
         return "DASHBOARD";
@@ -93,16 +108,18 @@ public class Controller {
 
 
     @GetMapping("/cart") //when the user clicks view cart button in the dashboard, this method will return cart page
-    public String cart(Model model){
-        List<Car> cars=carService.cars(currentUser);
-        model.addAttribute("name",currentUser.getName());
+    public String cart(Model model,HttpSession session){
+        User user=(User)session.getAttribute("user");
+        List<Car> cars=carService.cars(user);
+        model.addAttribute("name",user.getName());
         model.addAttribute("cars",cars);
         return "CART";
     }
 
 
     @GetMapping("/del/{carid}") //if the user decides to remove a car from his cart, this method will get called
-    public String delete(@PathVariable Long carid,Model model){
+    public String delete(@PathVariable Long carid,Model model,HttpSession session){
+        User currentUser=(User)session.getAttribute("user");
         carService.delete(carid);
         List<Car> cars=carService.cars(currentUser);
         model.addAttribute("name",currentUser.getName());
@@ -112,7 +129,10 @@ public class Controller {
 
 
     @GetMapping("/home") //method for returning to dashboard from the cart page
-    public String cartHome(){
+    public String cartHome(HttpSession session){
+        System.out.println(session);
         return "DASHBOARD";
     }
+
+
 }
