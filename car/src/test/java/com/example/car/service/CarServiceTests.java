@@ -1,9 +1,7 @@
-package com.example.car;
+package com.example.car.service;
 
 import com.example.car.model.Car;
-import com.example.car.model.User;
 import com.example.car.repository.CARREPO;
-import com.example.car.service.CarService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,9 +9,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -37,7 +32,6 @@ public class CarServiceTests {
         car.setModel("dinesh");
         car.setPrice(12000);
         car.setUser(null);
-
         Mockito.when(carService.save(car)).thenReturn(car);
 
         Car savedCar=carService.save(car);

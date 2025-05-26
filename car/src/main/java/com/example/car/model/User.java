@@ -12,7 +12,9 @@ public class User {
 
     private String name;
     @Column(unique = true)
+
     private String mobile;
+    
     private String password;
 
 

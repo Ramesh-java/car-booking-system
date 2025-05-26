@@ -50,13 +50,14 @@
             margin-left: 70px;
             margin-top:0%;
         }
-        .model-2{
-            position: absolute;
-            right: 30px;
-            top: 208px;
+        .model-1{
+            padding:50px;
+
+
+
         }
         .model-4{
-            position: absolute;
+
             right: 30px;
             top: 676px;
         }
@@ -66,29 +67,70 @@
         }
         
         .models{
+            display: flex;
+            flex-direction: row;
             border-style: solid;
             margin-top: 70px;
+            overflow: auto;
+
         }
         .opening{
             margin-top: 20px;
         }
+
+        .response{
+            border-style: solid;
+            border-color: purple;
+            heigth:20vh;
+        }
+        @media screen and (max-width:781px){
+        .models{
+            display: flex;
+            flex-direction: column;
+            overflow-y:visible;
+
+        }
+        }
+
+
     </style>
+
+
+    <script>
+
+
+
+
+
+    </script>
 </head>
 <body>
+<div class="container" >
+    <div class="row ">
+
+</div>
+
+
+
 <div class="  opening">
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body ">
+
+
+                    <a th:href="@{/assistant}" class="btn btn-danger">Assistant
+                        </a>
+
                     <h5 class="card-title text-center home">Car Booking</h5>
 
 
                     <div class="signup">
-                        <a th:href="@{/loginPage}"  class="btn btn-primary login-button">Login</a>
+                        <a th:href="@{/loginPage}"  class="btn btn-primary ">Login</a>
 
-                        <a th:href="@{/signupPage}" class="btn btn-primary signup-button">Signup</a>
+                        <a th:href="@{/signupPage}" class="btn btn-primary ">Signup</a>
 
-                        <a th:href="@{/loginPage}" class="btn btn-primary cart-button">View Cart</a>
+                        <a th:href="@{/loginPage}" class="btn btn-primary ">View Cart</a>
                     </div>
 
 
@@ -99,8 +141,8 @@
     </div>
 
     <div class="container models">
-    <div class="model-1">
-        <div class="car-img"><img  src="https://static.smoss.apac.bmw.cloud/bmw-admin-portal/bmw-admin-portal-productcatalog-prod/1704817696718_7inNewProject(6).png" alt="THE 3 GRAN LIMOUSINE"></div>
+    <div class="model-1 ">
+        <img  src="https://static.smoss.apac.bmw.cloud/bmw-admin-portal/bmw-admin-portal-productcatalog-prod/1704817696718_7inNewProject(6).png" alt="THE 3 GRAN LIMOUSINE">
         <br> <div class="car1"><i>THE 3 GRAN LIMOUSINE</i></div> <br>
         <br> <div class="car-1"><i>₹ 8000000</i></div> <br>
 
@@ -112,11 +154,11 @@
 
 
 
-    <div class="model-2">
+    <div class="model-1">
     <img src="https://static.smoss.apac.bmw.cloud/bmw-admin-portal/bmw-admin-portal-productcatalog-prod/1700464218274_X1inNewProject(5).png
 " alt="THE 2">
-    <br> <div class="car2"><i>THE 2</i></div> <br>
-        <br> <div class="car2"><i>₹ 7600000</i></div> <br>
+    <br> <div class="car1"><i>THE 2</i></div> <br>
+        <br> <div class="car1"><i>₹ 7600000</i></div> <br>
 
         <a th:href="@{/loginPage}"><div  class="btn btn-primary cart2">Add to Cart</div></a>
     </div>
@@ -128,7 +170,7 @@
 
 
 
-    <div class="model-3">
+    <div class="model-1">
     <img src="https://static.smoss.apac.bmw.cloud/bmw-admin-portal/bmw-admin-portal-productcatalog-prod/1679984621950_3in3GL.png
 " alt="THE X1">
         <br> <div class="car3"><i>THE X1</i></div> <br>
@@ -139,7 +181,7 @@
 
 
 
-    <div class="model-4">
+    <div class="model-1">
     <img src="https://static.smoss.apac.bmw.cloud/bmw-admin-portal/bmw-admin-portal-productcatalog-prod/1641183942015_2in2gc.png
 " alt="THE 7">
         <br> <div class="car4"><i>THE 7</i></div> <br>
@@ -150,6 +192,10 @@
 
     </div>
 
+
+
+</div>
+    </div>
 </div>
 </body>
 </html>

@@ -20,7 +20,7 @@ public class Config {
                         .requestMatchers("/signupPage", "/loginPage", "/Signed", "/logged", "/html").permitAll()
                         .anyRequest().permitAll()
                 )
-                .csrf(csrf -> csrf.disable()); // ✅ New syntax
+                .csrf(csrf -> csrf.disable());
         return http.build();
     }
 
